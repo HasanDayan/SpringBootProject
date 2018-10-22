@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="tr-TR">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <th:block th:include="headerinc :: head"></th:block>
+    <title>Yazar Ekle</title>
+    <script src="static/js/moment.js" th:src="@{/js/moment.js}"></script>
+    <script>
+        // bu script mobile modda sol panelin açılması için
+        $(document).ready(function () {
+            $(".button-collapse").sideNav();
+        });
+    </script>
+    <script type="text/javascript">
+
+        function DoPost() {
+            document.getElementById("myForm").submit();
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function validateForm() {
+            var a = document.forms["Form"]["name"].value;
+            var b = document.forms["Form"]["country"].value;
+
+            if (a == "" || b == "" || c == "") {
+                alert("Lütfen bütün alanları doldurunuz.");
+                return false;
+            }
+        }
+    </script>
+</head>
+<body style="background-color: white;">
+
+    <th:block th:include="navinc :: body"></th:block>
+
+<div class="container">
+    <form id="myForm" hidden th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+    <div class="row">
+		<div class="row">
+            <center>
+                <h5 th:text="${session.hata}" th:unless="${session == null}"></h5>
+    		</center>
+        </div>
+        <form name="Form" class="col s8 offset-s2" id="upload-file-form"
+              enctype="multipart/form-data" th:object="${person}"
+              th:action="@{/savePerson}" onsubmit="return validateForm()"
+              method="post">
+
+            <div class="row">
+                <input type="hidden" th:field="*{id}"/>
+            </div>
+            <div class="row">
+                <div class="input-field">
+                    <input id="name" type="text" class="validate" th:field="*{name}">
+                    <label for="name">Yazar Adı</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field">
+                    <input id="country" type="text" class="validate" th:field="*{country}">
+                    <label for="country">Yazar Ülkesi</label>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="input-field col s6 "></div>
+                <div class="input-field col s6 ">
+                    <button class="btn waves-effect waves-light col s8 offset-s4" type="submit" name="action">Kaydet</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="row col s8 offset-s2">
+            <div class="input-field col s6 "></div>
+            <div class="input-field col s6 ">
+                <button onclick="goBack()" class="btn waves-effect waves-light col s8 offset-s4">Geri Dön</button>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="page-footer cyan"></footer>
+</body>
+</html>

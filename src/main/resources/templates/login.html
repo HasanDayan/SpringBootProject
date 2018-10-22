@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <th:block th:include="headerinc :: head"></th:block>
+    <script>
+        $(document).ready(function () {
+            $(".button-collapse").sideNav();
+        });
+        
+        function validateForm() {
+			var a = document.forms["Form"]["username"].value;
+            var b = document.forms["Form"]["password"].value;
+
+            if (a == "" || b == "") {
+                alert("Lütfen bütün alanları doldurunuz.");
+                return false;
+            }
+		}
+    </script>
+    <title>Giriş</title>
+</head>
+<body>
+
+<nav>
+    <div class="nav-wrapper cyan">
+        <a class="brand-logo"><i class="material-icons">dashboard</i> Giriş Ekranı</a>
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="center-align">
+        <br/> <br/> <br/>
+        <h3>Giriş</h3>
+        <p th:if="${#httpServletRequest.parameterMap.containsKey('error')}">Geçersiz kullanıcı adı veya şifre</p>
+        <p th:if="${#httpServletRequest.parameterMap.containsKey('logout')}">Çıkış yaptınız.</p>
+    </div>
+
+    <div class="row">
+        <form name="Form" class="col s12" action="#" th:action="@{/login}" onsubmit="return validateForm()" method="post">
+            <div class="row">
+                <div class="input-field col s6 offset-s3">
+                    <input name="username" id="username" type="text" class="validate"/>
+                    <label for="first_name">Kullanıcı adı</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s6 offset-s3">
+                    <input name="password" id="password" type="password" class="validate"/>
+                    <label for="password">Şifre</label>
+                </div>
+            </div>
+            <button class="btn waves-effect waves-light col s2 offset-s3 cyan" type="submit" name="action">
+                Giris <i class="material-icons right">send</i>
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

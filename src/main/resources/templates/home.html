@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="headerinc :: head"></th:block>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script language="javascript">
+        function DoPost() {
+            document.getElementById("myForm").submit();
+        }
+    </script>
+
+    <script>
+        // bu script mobile modda sol panelin açılması için
+        $(document).ready(function () {
+            $(".button-collapse").sideNav();
+        });
+    </script>
+</head>
+<body>
+
+    <th:block th:include="navinc :: body"></th:block>
+
+<div class="page-content">
+    <form id="myForm" hidden th:action="@{/logout}" method="post">
+        <input type="hidden" value="Sign Out"/>
+    </form>
+	
+	
+    <div class="cardCustom cardTemplate" th:each="article : ${articles}">
+
+        <div class="fixed-action-btn horizontal" style="top: 10px; right: 10px;">
+            <a class="btn-floating btn-large cyan"><i class="large material-icons">menu</i></a>
+            <ul>
+					<li><a th:href="${'editArticle/' + article.articleId}" class="btn-floating blue"><i class="material-icons">mode_edit</i></a></li>
+            </ul>
+        </div>
+
+        <header class="card__thumb">
+            <img class="card__thumb_src" />
+        </header>
+
+        <div class="card__percent">
+            <img th:src="${'images/yesil.png'}" width="75" height="75"/>
+        </div>
+
+        <div class="card__body">
+            <div>
+                <img class="card__triangle" th:src="${'images/small_yesil.png'}"/>
+            	<span class="card__header" th:text="${article.title}"></span>
+            </div>
+            <p class="card__date">
+                <span class="card__date_first" th:text="${article.category}"></span>
+            </p>
+            <p class="card__remainingDate">
+                <span th:text="${article.author.name}"></span>
+            </p>
+            <div>
+                <span th:text="${article.author.country}"></span>
+            </div>
+        </div>
+     
+</div>
+</body>
+</html>

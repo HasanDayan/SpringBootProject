@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="tr-TR">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <th:block th:include="headerinc :: head"></th:block>
+    <script>
+        $(document).ready(function () {
+            $(".button-collapse").sideNav();
+        });
+    </script>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper cyan">
+        <a class="brand-logo"><i class="material-icons">report_problem</i> Sayfa Bulunamadı!</a>
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+<div class="page-content">
+    <center>
+        <h3>Aradığınız sayfa bulunamadı</h3>
+    </center>
+</div>
+</body>
+</html>
