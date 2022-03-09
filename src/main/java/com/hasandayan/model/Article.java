@@ -1,5 +1,7 @@
 package com.hasandayan.model;
 
+import com.hasandayan.dto.ArticleDTO;
+
 import java.io.Serializable;
 
 import javax.persistence.Entity;
@@ -22,8 +24,8 @@ public class Article implements Serializable {
 	private Person author;
 
 	@Id
-	@SequenceGenerator(name = "SEQUENCE_GENERATOR", sequenceName = "SEQ_ARTICLE", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_GENERATOR")
+	@SequenceGenerator(name = "SEQ_ARTICLE_GEN", sequenceName = "SEQ_ARTICLE", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ARTICLE_GEN")
 	public Long getArticleId() {
 		return articleId;
 	}
@@ -57,7 +59,18 @@ public class Article implements Serializable {
 	public void setAuthor(Person author) {
 		this.author = author;
 	}
-	
+
+	public ArticleDTO toDTO() {
+		ArticleDTO dto = new ArticleDTO();
+
+		dto.setArticleId(this.articleId);
+		dto.setTitle(this.title);
+		dto.setCategory(this.category);
+		dto.setAuthor(this.author.toDTO());
+
+		return dto;
+	}
+
 	@Override
 	public String toString() {
 		return "Article [articleId=" + articleId + ", title=" + title + ", category=" + category + ", author=" + author

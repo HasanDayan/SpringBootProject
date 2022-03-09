@@ -1,4 +1,4 @@
-package com.hasandayan;
+package com.hasandayan.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -27,10 +27,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		filter.setForceEncoding(true);
 		http.addFilterBefore(filter, CsrfFilter.class);
 
-		http.authorizeRequests().antMatchers("/").authenticated().and().formLogin().loginPage("/login").and()
+		http.authorizeRequests()
+				.antMatchers("/").authenticated().and()
+				.formLogin().loginPage("/login").and()
 				.logout().invalidateHttpSession(true).clearAuthentication(true)
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout")
-				.permitAll().and().csrf().disable().headers().defaultsDisabled().cacheControl();
+				.permitAll().and()
+				.csrf().disable().headers().defaultsDisabled().cacheControl();
 	}
 
 	@Autowired

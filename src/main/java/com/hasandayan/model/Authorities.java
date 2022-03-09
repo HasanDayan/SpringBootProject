@@ -14,9 +14,6 @@ public class Authorities implements Serializable {
 	private String username;
 	private String authority;
 
-	public Authorities() {
-	}
-
 	public String getUsername() {
 		return username;
 	}

@@ -1,5 +1,7 @@
 package com.hasandayan.model;
 
+import com.hasandayan.dto.PersonDTO;
+
 import java.io.Serializable;
 
 import javax.persistence.Entity;
@@ -18,8 +20,8 @@ public class Person implements Serializable {
 	private String country;
 
 	@Id
-	@SequenceGenerator(name = "SEQUENCE_GENERATOR", sequenceName = "SEQ_PERSON", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_GENERATOR")
+	@SequenceGenerator(name = "SEQ_PERSON_GEN", sequenceName = "SEQ_PERSON", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PERSON_GEN")
 	public Long getId() {
 		return id;
 	}
@@ -42,6 +44,16 @@ public class Person implements Serializable {
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	public PersonDTO toDTO() {
+		PersonDTO dto = new PersonDTO();
+
+		dto.setId(this.id);
+		dto.setName(this.name);
+		dto.setCountry(this.country);
+
+		return dto;
 	}
 
 	@Override

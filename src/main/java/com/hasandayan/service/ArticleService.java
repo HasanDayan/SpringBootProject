@@ -1,8 +1,26 @@
 package com.hasandayan.service;
 
-import com.hasandayan.model.Article;
-import com.hasandayan.utils.RecordImplements;
+import java.io.Serializable;
 
-public interface ArticleService extends RecordImplements<Article> {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.hasandayan.model.Article;
+import com.hasandayan.repository.ArticleRepository;
+import com.hasandayan.utils.BaseService;
+
+@Service
+@Transactional
+public class ArticleService implements BaseService<Article> {
+
+	@Autowired
+	private ArticleRepository articleRepository;
+
+	@Override
+	public JpaRepository<Article, Serializable> getRepository() {
+		return articleRepository;
+	}
 
 }

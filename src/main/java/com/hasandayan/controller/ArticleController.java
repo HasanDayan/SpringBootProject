@@ -1,25 +1,18 @@
 package com.hasandayan.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.hasandayan.dto.ArticleDTO;
+import com.hasandayan.service.ArticleService;
+import com.hasandayan.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import com.hasandayan.log.ProjectLog;
 import com.hasandayan.model.Article;
 import com.hasandayan.model.Person;
-import com.hasandayan.service.ArticleService;
-import com.hasandayan.service.PersonService;
 
 @Controller
 public class ArticleController {
@@ -30,15 +23,14 @@ public class ArticleController {
 	@Autowired
 	private PersonService personService;
 
-	ProjectLog logger = ProjectLog.getInstance();
+	private static final ProjectLog logger = ProjectLog.getInstance();
 
 	@ResponseBody
-	@RequestMapping(value = "listArticles", method = RequestMethod.GET)
-	private String listArticles() {
-		List<Article> articles = new ArrayList<>();
+	@GetMapping("listArticles")
+	public String listArticles() {
 
 		try {
-			articles = (List<Article>) articleService.findAll();
+			List<Article> articles = articleService.findAll();
 			logger.writeLog("info", articles.toString());
 			return articles.toString();
 		} catch (Exception e) {
@@ -48,33 +40,33 @@ public class ArticleController {
 		return null;
 	}
 
-	@RequestMapping(value = "newArticle", method = RequestMethod.GET)
-	private String newArticle(ModelMap model) {
-		model.addAttribute("article", new Article());
+	@GetMapping("newArticle")
+	public String newArticle(Model model) {
+		model.addAttribute("article", new ArticleDTO());
 		model.addAttribute("authors", personService.findAll());
 		return "articleform";
 	}
 
-	@RequestMapping(value = "editArticle", method = RequestMethod.GET)
-	private String newArticle(@RequestParam("id") Integer id, ModelMap model) {
-		model.addAttribute("article", articleService.findById(id.longValue()).get());
+	@GetMapping("editArticle")
+	public String newArticle(@RequestParam("id") Integer id, Model model) {
+		Article article = articleService.findById(id.longValue()).orElseThrow(() -> new RuntimeException("Article not found"));
+		model.addAttribute("article", article.toDTO());
+		model.addAttribute("authors", personService.findAll());
 		return "articleform";
 	}
 
-	@RequestMapping(value = "saveArticle", method = RequestMethod.POST)
-	private String saveArticle(Article article, ModelMap model) {
+	@PostMapping("saveArticle")
+	public String saveArticle(ArticleDTO article) {
 
 		try {
-
 			logger.writeLog("info", "1. Alanlar utf-8 e gore cevrilir ");
-			article = convertFiledsToUtf8(article);
+			convertFieldsToUtf8(article);
 			
 			Long authorId = article.getAuthor().getId();
-			Person author = personService.findById(authorId).get();
-			article.setAuthor(author);
-			
+			Person author = personService.findById(authorId).orElseThrow(() -> new RuntimeException("Person not found"));
+			article.setAuthor(author.toDTO());
 
-			articleService.save(article);
+			articleService.save(article.toObject());
 		} catch (Exception e) {
 			logger.writeLog("error", e.toString());
 
@@ -88,19 +80,25 @@ public class ArticleController {
 		return "redirect:/home";
 	}
 
-	public Article convertFiledsToUtf8(Article article) {
+	private void convertFieldsToUtf8(ArticleDTO article) {
 
 		article.setTitle(getNormalizedValue(article.getTitle()));
 		article.setCategory(getNormalizedValue(article.getCategory()));
-
-		return article;
 	}
 
-	public String getNormalizedValue(String value) {
+	private String getNormalizedValue(String value) {
 
-		return value.replaceAll("Ã§", "ç").replaceAll("Ã", "Ç").replaceAll("Ä", "ğ").replaceAll("Ä", "Ğ")
-				.replaceAll("Ä±", "ı").replaceAll("I", "I").replaceAll("Ã¶", "ö").replaceAll("Ã", "Ö")
-				.replaceAll("Å", "ş").replaceAll("Å", "Ş").replaceAll("Ã¼", "ü").replaceAll("Ã", "Ü")
-				.replaceAll("Ä°", "İ");
+		return value.replace("Ã§", "ç")
+				.replace("Ã", "Ç")
+				.replace("Ä", "ğ")
+				.replace("Ä", "Ğ")
+				.replace("Ä±", "ı")
+				.replace("Ã¶", "ö")
+				.replace("Ã", "Ö")
+				.replace("Å", "ş")
+				.replace("Å", "Ş")
+				.replace("Ã¼", "ü")
+				.replace("Ã", "Ü")
+				.replace("Ä°", "İ");
 	}
 }

@@ -7,13 +7,13 @@ import java.util.Locale;
 
 public class ProjectLog {
 
-	public static ProjectLog _this = null;
-	private final String logFile = "project_log.txt";
+	private static ProjectLog projectLog = null;
+	private static final String LOG_FILE = "project_log.txt";
 	private PrintWriter writer;
 
 	private ProjectLog() {
 		try {
-			FileWriter fw = new FileWriter(System.getProperty("user.home") + "/" + logFile);
+			FileWriter fw = new FileWriter(System.getProperty("user.home") + "/" + LOG_FILE);
 			writer = new PrintWriter(fw, true);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -22,11 +22,11 @@ public class ProjectLog {
 
 	public static synchronized ProjectLog getInstance() {
 
-		if (_this == null) {
-			_this = new ProjectLog();
+		if (projectLog == null) {
+			projectLog = new ProjectLog();
 		}
 
-		return _this;
+		return projectLog;
 	}
 
 	public void writeLog(String head, String content) {

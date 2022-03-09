@@ -15,9 +15,6 @@ public class User implements Serializable {
 	private String password;
 	private Boolean enabled;
 
-	public User() {
-	}
-
 	public String getUsername() {
 		return username;
 	}
