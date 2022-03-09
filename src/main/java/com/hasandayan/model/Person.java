@@ -49,9 +49,9 @@ public class Person implements Serializable {
 	public PersonDTO toDTO() {
 		PersonDTO dto = new PersonDTO();
 
-		dto.setId(this.id);
-		dto.setName(this.name);
-		dto.setCountry(this.country);
+		dto.setId(this.getId());
+		dto.setName(this.getName());
+		dto.setCountry(this.getCountry());
 
 		return dto;
 	}

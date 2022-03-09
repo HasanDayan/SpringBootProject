@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.hasandayan.dto.PersonDTO;
 import com.hasandayan.service.PersonService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +14,11 @@ import com.hasandayan.model.Person;
 @Controller
 public class PersonController {
 
-	@Autowired
-	private PersonService personService;
+	private final PersonService personService;
+
+	public PersonController(PersonService personService) {
+		this.personService = personService;
+	}
 
 	private static final ProjectLog logger = ProjectLog.getInstance();
 

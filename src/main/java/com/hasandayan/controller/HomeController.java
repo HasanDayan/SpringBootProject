@@ -3,8 +3,6 @@ package com.hasandayan.controller;
 import java.util.List;
 
 import com.hasandayan.service.ArticleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +12,11 @@ import com.hasandayan.model.Article;
 @Controller
 public class HomeController {
 
-	@Autowired
-	private ArticleService articleService;
+	private final ArticleService articleService;
+
+	public HomeController(ArticleService articleService) {
+		this.articleService = articleService;
+	}
 
 	@GetMapping({ "", "/" })
 	public String mainPage() {

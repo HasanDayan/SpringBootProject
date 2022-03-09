@@ -15,8 +15,11 @@ import com.hasandayan.utils.BaseService;
 @Transactional
 public class ArticleService implements BaseService<Article> {
 
-	@Autowired
-	private ArticleRepository articleRepository;
+	private final ArticleRepository articleRepository;
+
+	public ArticleService(ArticleRepository articleRepository) {
+		this.articleRepository = articleRepository;
+	}
 
 	@Override
 	public JpaRepository<Article, Serializable> getRepository() {

@@ -8,25 +8,21 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BaseService<T> {
 
-	public default T save(T t) {
-		return this.getRepo().save(t);
+	default void save(T t) {
+		this.getRepo().save(t);
 	}
 
-	public default List<T> findAll() {
+	default List<T> findAll() {
 		return this.getRepo().findAll();
 	}
 
-	public default Optional<T> findById(Serializable id) {
+	default Optional<T> findById(Serializable id) {
 		return this.getRepo().findById(id);
 	}
 
-	public default void delete(Serializable id) {
-		getRepo().deleteById(id);
-	}
+	JpaRepository<T, Serializable> getRepository();
 
-	public JpaRepository<T, Serializable> getRepository();
-
-	public default JpaRepository<T, Serializable> getRepo() {
+	default JpaRepository<T, Serializable> getRepo() {
 		return getRepository();
 	}
 

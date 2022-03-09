@@ -2,7 +2,6 @@ package com.hasandayan.service;
 
 import java.io.Serializable;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +14,11 @@ import com.hasandayan.utils.BaseService;
 @Transactional
 public class PersonService implements BaseService<Person> {
 
-	@Autowired
-	private PersonRepository personRepository;
+	private final PersonRepository personRepository;
+
+	public PersonService(PersonRepository personRepository) {
+		this.personRepository = personRepository;
+	}
 
 	@Override
 	public JpaRepository<Person, Serializable> getRepository() {

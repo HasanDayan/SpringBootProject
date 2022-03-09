@@ -63,10 +63,10 @@ public class Article implements Serializable {
 	public ArticleDTO toDTO() {
 		ArticleDTO dto = new ArticleDTO();
 
-		dto.setArticleId(this.articleId);
-		dto.setTitle(this.title);
-		dto.setCategory(this.category);
-		dto.setAuthor(this.author.toDTO());
+		dto.setArticleId(this.getArticleId());
+		dto.setTitle(this.getTitle());
+		dto.setCategory(this.getCategory());
+		dto.setAuthor(this.getAuthor().toDTO());
 
 		return dto;
 	}

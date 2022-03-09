@@ -5,7 +5,6 @@ import java.util.List;
 import com.hasandayan.dto.ArticleDTO;
 import com.hasandayan.service.ArticleService;
 import com.hasandayan.service.PersonService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +16,16 @@ import com.hasandayan.model.Person;
 @Controller
 public class ArticleController {
 
-	@Autowired
-	private ArticleService articleService;
-	
-	@Autowired
-	private PersonService personService;
+	private final ArticleService articleService;
+
+	private final PersonService personService;
 
 	private static final ProjectLog logger = ProjectLog.getInstance();
+
+	public ArticleController(ArticleService articleService, PersonService personService) {
+		this.articleService = articleService;
+		this.personService = personService;
+	}
 
 	@ResponseBody
 	@GetMapping("listArticles")
